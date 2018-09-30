@@ -6,6 +6,10 @@
 var express = require('express'); // Do Not Edit
 var app = express();              // Do Not Edit
 
+var helmet = require('helmet');
+
+
+
 // ----
 
 /** - Challenges - *
@@ -45,7 +49,7 @@ var app = express();              // Do Not Edit
 
 // We don't need our app to be framed, so you should use `helmet.frameguard()`
 // passing to it the configuration object `{action: 'deny'}`
-
+helmet.frameguard({action: 'deny'});
  
 
 /** 4) Mitigate the risk of XSS - `helmet.xssFilter()` */
@@ -202,6 +206,9 @@ var ninetyDaysInMilliseconds = 90*24*60*60*1000;
 // ease of testing. Using the 'parent' `helmet()` middleware is easiest, and
 // cleaner, for a real project.
 
+app.use(helmet.hidePoweredBy({ setTo: 'PHP 4.2.0' }))
+helmet.frameguard({action: 'deny'})
+
 // ---- DO NOT EDIT BELOW THIS LINE ---------------------------------------
 
 module.exports = app;
@@ -209,6 +216,7 @@ var api = require('./server.js');
 app.use(express.static('public'));
 app.disable('strict-transport-security');
 app.use('/_api', api);
+
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
