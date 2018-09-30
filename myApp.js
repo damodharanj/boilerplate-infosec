@@ -224,6 +224,18 @@ app.use(helmet.hsts({
 }))
 app.use(helmet.dnsPrefetchControl())
 
+// app.use(helmet({
+//   frameguard: {              
+//     action: 'deny'
+//   },
+//   contentSecurityPolicy: {   
+//    directives: {
+//      defaultSrc: ["'self'"],
+//      styleSrc: ['style.com'],
+//    }
+//   },
+//  dnsPrefetchControl: false   
+// })) use this in case of minimal configuration
 
 // ---- DO NOT EDIT BELOW THIS LINE ---------------------------------------
 
