@@ -10,6 +10,7 @@ var helmet = require('helmet');
 
 
 
+
 // ----
 
 /** - Challenges - *
@@ -205,9 +206,24 @@ var ninetyDaysInMilliseconds = 90*24*60*60*1000;
 // We introduced each middleware separately, for teaching purpose, and for
 // ease of testing. Using the 'parent' `helmet()` middleware is easiest, and
 // cleaner, for a real project.
-
+app.use(helmet.frameguard({action: 'deny'}));
+app.use(helmet.xssFilter());
 app.use(helmet.hidePoweredBy({ setTo: 'PHP 4.2.0' }))
-helmet.frameguard({action: 'deny'})
+app.use(helmet.noSniff())
+app.use(helmet.ieNoOpen())
+app.use(helmet.noCache())
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", 'trusted-cdn.com']
+  }
+}))
+var sixtyDaysInSeconds = 777600000;
+app.use(helmet.hsts({
+  maxAge: sixtyDaysInSeconds
+}))
+app.use(helmet.dnsPrefetchControl())
+
 
 // ---- DO NOT EDIT BELOW THIS LINE ---------------------------------------
 
